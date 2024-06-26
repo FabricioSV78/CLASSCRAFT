@@ -1,0 +1,18 @@
+name: Fly Deploy
+
+on:
+  push:
+    branches:
+      - master  # El flujo de trabajo se dispara cuando se hace push a la rama 'main'
+
+env:
+  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}  # Usa el token de API de Fly.io como una variable de entorno
+
+jobs:
+  deploy:
+    name: Deploy app
+    runs-on: ubuntu-latest  # Ejecuta este trabajo en el último Ubuntu disponible
+    steps:
+      - uses: actions/checkout@master  # Obtiene el código del repositorio
+      - uses: superfly/flyctl-actions/setup-flyctl@master  # Configura el CLI de Fly.io para usar en el trabajo
+      - run: flyctl deploy -a classcraft --remote-only
